@@ -7,17 +7,18 @@ import "./IAave.sol";
 import "./IERC20.sol";
 
 contract FlashloanCaller {
-    address immutable MORPHO_BLUE_ADDRESS =
+    address public immutable MORPHO_BLUE_ADDRESS =
         0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb;
-    address immutable BALANCER_VAULT_ADDRESS =
+    address public immutable BALANCER_VAULT_ADDRESS =
         0xBA12222222228d8Ba445958a75a0704d566BF2C8;
-    address immutable AAVE_V3_POOL_ADDRESS =
+    address public immutable AAVE_V3_POOL_ADDRESS =
         0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2;
 
+    function approveContract(address token, address targetAddress) public {
+        IERC20(token).approve(targetAddress, type(uint256).max);
+    }
     function flashloanBlue(address asset, uint256 amount) public {
         IMorpho morpho = IMorpho(MORPHO_BLUE_ADDRESS);
-
-        IERC20(asset).approve(address(morpho), type(uint256).max);
 
         morpho.flashLoan(asset, amount, hex"");
     }
